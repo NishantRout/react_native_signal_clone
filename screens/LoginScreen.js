@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { StyleSheet } from "react-native";
 import { KeyboardAvoidingView } from "react-native";
-import { StatusBar } from "react-native";
-import { View, Text, Keyboard, TouchableWithoutFeedback } from "react-native";
+import { StatusBar } from "expo-status-bar";
+import { View, Text, Keyboard } from "react-native";
 import { Button, Input, Image } from "react-native-elements";
-import { color } from "react-native-reanimated";
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
