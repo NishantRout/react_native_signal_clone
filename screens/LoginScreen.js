@@ -19,7 +19,11 @@ const LoginScreen = ({ navigation }) => {
     return unsubscribe;
   }, []);
 
-  const signIn = () => {};
+  const signIn = () => {
+    auth
+      .signInWithEmailAndPassword(email, password)
+      .catch((error) => alert(error.message));
+  };
 
   return (
     <KeyboardAvoidingView
@@ -59,6 +63,7 @@ const LoginScreen = ({ navigation }) => {
           inputContainerStyle={{
             borderColor: "#ffffff",
           }}
+          onSubmitEditing={signIn}
         />
       </View>
       <Button
