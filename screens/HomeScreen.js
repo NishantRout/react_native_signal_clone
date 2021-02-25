@@ -2,8 +2,8 @@ import React, { useEffect, useLayoutEffect, useState } from "react";
 import { ScrollView } from "react-native";
 import { SafeAreaView } from "react-native";
 import { TouchableOpacity } from "react-native";
-import { StyleSheet, Text, View } from "react-native";
-import { Avatar } from "react-native-elements";
+import { StyleSheet, Text, View, TextInput } from "react-native";
+import { Avatar, Icon } from "react-native-elements";
 import CustomListItem from "../components/CustomListItem";
 import { auth, db } from "../config/firebase";
 import { AntDesign, SimpleLineIcons } from "@expo/vector-icons";
@@ -32,7 +32,11 @@ const HomeScreen = ({ navigation }) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       title: "Signal",
-      headerStyle: { backgroundColor: "#fff" },
+      headerStyle: {
+        backgroundColor: "#fff",
+        shadowColor: "transparent", // this covers iOS
+        elevation: 0,
+      },
       headerTitleStyle: { color: "#000" },
       headerTintColor: "#000",
       headerLeft: () => (
@@ -74,11 +78,33 @@ const HomeScreen = ({ navigation }) => {
     });
   }, [navigation]);
 
+  const enterChat = (id, chatName) => {
+    navigation.navigate("Chat", {
+      id: id,
+      chatName: chatName,
+    });
+  };
+
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ backgroundColor: "#fff" }}>
       <ScrollView style={styles.container}>
+        <View style={styles.search}>
+          <SimpleLineIcons name="magnifier" color="#A8A8A8" size={15} />
+          <TextInput
+            style={{ marginLeft: 8, fontWeight: "400", fontSize: "16" }}
+            placeholder="Search"
+            placeholderTextColor="#A8A8A8"
+            color="#333"
+          />
+        </View>
+
         {chats.map(({ id, data: { chatName } }) => (
-          <CustomListItem key={id} id={id} chatName={chatName} />
+          <CustomListItem
+            key={id}
+            id={id}
+            chatName={chatName}
+            enterChat={enterChat}
+          />
         ))}
       </ScrollView>
     </SafeAreaView>
@@ -90,5 +116,14 @@ export default HomeScreen;
 const styles = StyleSheet.create({
   container: {
     height: "100%",
+  },
+  search: {
+    height: 35,
+    borderRadius: 10,
+    backgroundColor: "#F2F2F2",
+    margin: 10,
+    padding: 10,
+    flexDirection: "row",
+    alignItems: "center",
   },
 });
