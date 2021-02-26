@@ -1,8 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Avatar, ListItem } from "react-native-elements";
+import { auth, db } from "../config/firebase";
 
 const CustomListItem = ({ id, chatName, enterChat }) => {
+  const [chatMessages, setChatMessages] = useState([]);
+
+  useEffect(() => {
+    const unsubscribe = db
+      .collection("chats")
+      .doc(id)
+      .collection("messages")
+      .orderBy("timestamp", "desc")
+      .onSnapshot((snapshot) =>
+        setChatMessages(snapshot.docs.map((doc) => doc.data()))
+      );
+    return unsubscribe;
+  }, [chatMessages]);
+
   //getting name initials
   const getInitials = (string) => {
     let names = string.split(" "),
@@ -18,27 +33,27 @@ const CustomListItem = ({ id, chatName, enterChat }) => {
 
   return (
     <ListItem
-      onPress={() => enterChat(id, chatName, userInitials)}
+      key={id}
+      onPress={() => enterChat(id, chatName)}
       key={id}
       bottomDivider
     >
       <Avatar
         size={50}
         rounded
-        // source={{
-        //   uri:
-        //     "https://cencup.com/wp-content/uploads/2019/07/avatar-placeholder.png",
-        // }}
         title={userInitials}
         titleStyle={{ fontWeight: "600", fontSize: 22 }}
         backgroundColor="#BDBDBD"
       />
       <ListItem.Content>
-        <ListItem.Title style={{ fontWeight: "700" }}>
+        <ListItem.Title style={{ fontWeight: "700", marginBottom: 4 }}>
           {chatName}
         </ListItem.Title>
         <ListItem.Subtitle numberOfLines={1} ellipsizeMode="tail">
-          This is a test subtitle
+          {chatMessages?.[0]?.email === auth.currentUser.email
+            ? "You"
+            : chatMessages?.[0]?.displayName}{" "}
+          : {chatMessages?.[0]?.message}
         </ListItem.Subtitle>
       </ListItem.Content>
     </ListItem>

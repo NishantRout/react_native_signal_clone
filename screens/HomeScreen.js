@@ -7,6 +7,7 @@ import { Avatar, Icon } from "react-native-elements";
 import CustomListItem from "../components/CustomListItem";
 import { auth, db } from "../config/firebase";
 import { AntDesign, SimpleLineIcons } from "@expo/vector-icons";
+import { StatusBar } from "react-native";
 
 const HomeScreen = ({ navigation }) => {
   const [chats, setChats] = useState([]);
@@ -27,7 +28,7 @@ const HomeScreen = ({ navigation }) => {
       );
     });
     return unsubscribe;
-  }, []);
+  }, [chats]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -87,11 +88,12 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={{ backgroundColor: "#fff" }}>
+      <StatusBar barStyle="dark-content" translucent={true} />
       <ScrollView style={styles.container}>
         <View style={styles.search}>
           <SimpleLineIcons name="magnifier" color="#A8A8A8" size={15} />
           <TextInput
-            style={{ marginLeft: 8, fontWeight: "400", fontSize: "16" }}
+            style={{ marginLeft: 8, fontWeight: "400", fontSize: 16 }}
             placeholder="Search"
             placeholderTextColor="#A8A8A8"
             color="#333"

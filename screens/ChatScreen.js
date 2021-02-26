@@ -81,7 +81,7 @@ const ChatScreen = ({ navigation, route }) => {
         </View>
       ),
     });
-  }, []);
+  }, [navigation, messages]);
 
   const sendMessage = () => {
     Keyboard.dismiss();
@@ -116,7 +116,7 @@ const ChatScreen = ({ navigation, route }) => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
-      <StatusBar style="dark" />
+      <StatusBar barStyle="dark-content" translucent={true} />
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.container}
@@ -148,7 +148,7 @@ const ChatScreen = ({ navigation, route }) => {
                     <Text style={styles.receiverName}>{data.displayName}</Text>
                   </View>
                 ) : (
-                  <View style={styles.sender}>
+                  <View key={id} style={styles.sender}>
                     <Avatar
                       rounded
                       size={30}
@@ -172,7 +172,7 @@ const ChatScreen = ({ navigation, route }) => {
               )}
             </ScrollView>
             <View style={styles.footer}>
-              <TouchableOpacity onPress={sendMessage} activeOpacity={0.5}>
+              <TouchableOpacity activeOpacity={0.5}>
                 <Ionicons name="add" size={32} color="#333" />
               </TouchableOpacity>
               <TextInput
