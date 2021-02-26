@@ -32,7 +32,10 @@ const RegisterScreen = ({ navigation }) => {
   };
 
   return (
-    <KeyboardAvoidingView behavior="padding" style={styles.container}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={styles.container}
+    >
       <StatusBar style="light" />
       <Text h3 style={{ marginBottom: 50 }}>
         Create a signal account

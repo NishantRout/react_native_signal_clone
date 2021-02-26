@@ -28,7 +28,7 @@ const LoginScreen = ({ navigation }) => {
   return (
     <KeyboardAvoidingView
       onPress={() => Keyboard.dismiss()}
-      behavior="padding"
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={styles.container}
     >
       <StatusBar style="light" />
